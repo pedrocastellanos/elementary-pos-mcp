@@ -7,7 +7,7 @@ RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.json ./
 COPY src ./src
 
-RUN pnpm install --frozen-lockfile \
+RUN pnpm install --frozen-lockfile --allow-build=esbuild \
  && pnpm run build \
  && pnpm prune --prod
 
