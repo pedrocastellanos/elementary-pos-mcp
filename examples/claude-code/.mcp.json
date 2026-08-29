@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "elementary-pos": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/elementary-pos-mcp/dist/index.js"],
+      "env": {
+        "ELEMENTARY_POS_API_KEY": "${ELEMENTARY_POS_API_KEY}",
+        "ELEMENTARY_POS_BASE_URL": "https://api.elementarypos.com",
+        "ELEMENTARY_POS_TIMEOUT_MS": "15000"
+      }
+    }
+  }
+}
