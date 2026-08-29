@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const envSchema = z.object({
   ELEMENTARY_POS_API_KEY: z.string().min(1).optional(),
+  X_API_KEY: z.string().min(1).optional(),
   ELEMENTARY_POS_BASE_URL: z.url().default("https://api.elementarypos.com"),
   ELEMENTARY_POS_TIMEOUT_MS: z.coerce.number().int().positive().default(15_000),
   PORT: z.coerce.number().int().positive().default(3000),
@@ -29,8 +30,10 @@ export type Config = {
  * The env var is kept only as an optional fallback for backwards compatibility.
  */
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
+  const headerKey = (env as Record<string, string | undefined>)["x-api-key"] ?? (env as Record<string, string | undefined>)["X-API-KEY"];
   const parsed = envSchema.parse({
     ELEMENTARY_POS_API_KEY: env.ELEMENTARY_POS_API_KEY,
+    X_API_KEY: env.X_API_KEY ?? headerKey,
     ELEMENTARY_POS_BASE_URL: env.ELEMENTARY_POS_BASE_URL,
     ELEMENTARY_POS_TIMEOUT_MS: env.ELEMENTARY_POS_TIMEOUT_MS,
     PORT: env.PORT,
@@ -39,8 +42,9 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     MCP_HTTP_PATH: env.MCP_HTTP_PATH
   });
 
+  const resolvedKey = parsed.X_API_KEY ?? parsed.ELEMENTARY_POS_API_KEY;
   return {
-    ...(parsed.ELEMENTARY_POS_API_KEY !== undefined ? { apiKey: parsed.ELEMENTARY_POS_API_KEY } : {}),
+    ...(resolvedKey !== undefined ? { apiKey: resolvedKey } : {}),
     baseUrl: parsed.ELEMENTARY_POS_BASE_URL.replace(/\/+$/, ""),
     timeoutMs: parsed.ELEMENTARY_POS_TIMEOUT_MS,
     port: parsed.PORT,

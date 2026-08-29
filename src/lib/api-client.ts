@@ -8,7 +8,7 @@ export class ElementaryPosApiClient {
     const key = (override?.trim() || this.config.apiKey?.trim()) ?? "";
     if (!key) {
       throw new Error(
-        "Elementary POS API key is required. For remote MCP, set opencode.json headers: {\"ELEMENTARY_POS_API_KEY\":\"pak-...\"} (or X-Api-Key / Authorization: Bearer). For stdio, set env ELEMENTARY_POS_API_KEY. Or pass apiKey tool param."
+        "Elementary POS API key is required. For remote MCP, set opencode.json headers: {\"x-api-key\":\"pak-...\"}. For stdio, set env X_API_KEY. Or pass apiKey tool param."
       );
     }
     return key;

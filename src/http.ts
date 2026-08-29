@@ -50,7 +50,7 @@ async function writeWebResponse(webRes: Response, nodeRes: http.ServerResponse) 
 
 const server = http.createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, mcp-session-id, mcp-protocol-version, Authorization, X-Api-Key, ELEMENTARY_POS_API_KEY, X-Elementary-Pos-Api-Key");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, mcp-session-id, mcp-protocol-version, Authorization, x-api-key");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
   res.setHeader("Access-Control-Expose-Headers", "mcp-session-id");
 
@@ -82,12 +82,7 @@ const server = http.createServer(async (req, res) => {
       const v = req.headers[name.toLowerCase()];
       return Array.isArray(v) ? v[0] : v;
     };
-    const rawHeader =
-      getHeader("ELEMENTARY_POS_API_KEY") ??
-      getHeader("X-API-KEY") ??
-      getHeader("X-ELEMENTARY-POS-API-KEY") ??
-      getHeader("ELEMENTARY-POS-API-KEY") ??
-      undefined;
+    const rawHeader = getHeader("x-api-key") ?? undefined;
     const auth = getHeader("authorization");
     const headerKey = (rawHeader as string | undefined) ?? (auth ? String(auth).replace(/^Bearer\s+/i, "") : undefined);
     if (!headerKey) {

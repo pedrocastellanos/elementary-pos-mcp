@@ -13,7 +13,7 @@ const apiKeyField = z
   .min(1)
   .optional()
   .describe(
-    "Elementary POS API Key. Configure it in the MCP client (e.g., Claude Desktop mcp.json `env` or MCP settings), NOT in the server .env. If omitted, the server will fall back to ELEMENTARY_POS_API_KEY env var if set."
+    "Elementary POS API Key. For remote MCP, configure opencode.json headers: {\"x-api-key\":\"pak-...\"}. If omitted, server falls back to X_API_KEY env or x-api-key header."
   );
 
 function withApiKey(schema: ZodType | undefined): ZodType {
@@ -58,7 +58,7 @@ export function registerReadTool(
   server.registerTool(
     name,
     {
-      description: `${description} Requires \`apiKey\` if the server was not started with ELEMENTARY_POS_API_KEY env.`,
+      description: `${description} Requires \`apiKey\` if no x-api-key header / X_API_KEY env.`,
       inputSchema: schemaWithKey,
       annotations: {
         readOnlyHint: true,
@@ -90,7 +90,7 @@ export function registerWriteTool(
   server.registerTool(
     name,
     {
-      description: `${description} Requires \`apiKey\` if the server was not started with ELEMENTARY_POS_API_KEY env.`,
+      description: `${description} Requires \`apiKey\` if no x-api-key header / X_API_KEY env.`,
       inputSchema: schemaWithKey,
       annotations: {
         readOnlyHint: false,
