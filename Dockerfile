@@ -1,8 +1,8 @@
-ARG NODE_VERSION=20
+ARG NODE_VERSION=22
 
 FROM node:${NODE_VERSION}-alpine AS builder
 WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.json ./
 COPY src ./src
