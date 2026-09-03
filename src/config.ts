@@ -5,7 +5,7 @@ const envSchema = z.object({
   X_API_KEY: z.string().min(1).optional(),
   ELEMENTARY_POS_BASE_URL: z.url().default("https://api.elementarypos.com"),
   ELEMENTARY_POS_TIMEOUT_MS: z.coerce.number().int().positive().default(15_000),
-  PORT: z.coerce.number().int().positive().default(3000),
+  PORT: z.coerce.number().int().positive().default(3001),
   HOST: z.string().default("0.0.0.0"),
   MCP_TRANSPORT: z.enum(["stdio", "http", "both"]).default("http"),
   MCP_HTTP_PATH: z.string().default("/mcp")
